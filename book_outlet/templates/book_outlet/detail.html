@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block title %} {{book.title}} {% endblock  %}
+{% block content %}
+    <h2>{{book.title}}</h2>
+    <p>author: {{book.author}}</p>
+    <p>rating: {{book.rating}}</p>    
+    {% if book.is_bestselling %}
+    <p> this book is a bestseller.</p>
+    {% endif %}
+    <a href="{% url 'index' %}">return to book list</a>
+{% endblock  %}
