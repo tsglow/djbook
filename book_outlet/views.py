@@ -5,23 +5,15 @@ from django.utils.text import slugify
 # Create your views here.
 
 def dbtodict():
-    list = Book.objects.all()
-    book_list = []
-    for b in list:        
-        book_list.append({
-            "title": b.title,
-            "author": b.author,
-            "rating": b.rating,
-            "is_bestselling": b.is_bestselling,
-            "url": slugify(b.title)
-            })
-    return book_list
+    list = Book.objects.all().order_by("-rating")    
+    for book in list:        
+        book.url = slugify(book.title)            
+    return list
 
 def get_detail(url):
-    book_list = dbtodict()
-    result = next((book for book in book_list if book["url"] == url))    
+    list = dbtodict()
+    result = next((book for book in list if book.url == url))    
     return result
-
 
 def index(request):
     return render(request,"book_outlet/index.html", {"books": dbtodict()})
