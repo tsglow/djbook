@@ -5,7 +5,7 @@
 {% block content %}
     <ul>
         {% for book in books %}
-            <li><a href="{{book.url}}">Rating: {{book.rating}} / {{book.title}} by {{book.author}}</a> </li>            
+            <li><a href="{{ book.get_absolute_url }}">Rating: {{book.rating}} / {{book.title}} by {{book.author}}</a> </li>            
         {% endfor %}
     </ul>
     
