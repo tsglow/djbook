@@ -2,6 +2,7 @@ from django.shortcuts import render
 from book_outlet.models import Book
 from django.http import Http404, HttpResponseRedirect
 from django.urls import reverse
+from django.db.models import Avg, Max, Min
 
 # Create your views here.
 
@@ -14,7 +15,15 @@ def get_detail(url):
     return book
 
 def index(request):
-    return render(request,"book_outlet/index.html", {"books": dbtodict()})
+    books = dbtodict()
+    num_books = books.count()
+    avg_rating = books.aggregate(Avg("rating"))
+
+    return render(request,"book_outlet/index.html", {
+        "books": books,
+        "total": num_books,
+        "average": avg_rating
+        })
 
 def detail(request,pk,url):        
     try:
