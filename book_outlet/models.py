@@ -9,6 +9,30 @@ class Address(models.Model):
     street = models.CharField(max_length=100)
     postal_code = models.CharField(max_length=5)
     city = models.CharField(max_length=100)
+    
+    def full_addr(self):
+        return f"{self.street} {self.postal_code}, {self.city}"
+    
+    def __str__(self):
+        return self.full_addr()
+    
+    class Meta:
+        verbose_name_plural = "Addresses"
+
+
+class Country(models.Model):
+    name = models.CharField(max_length=80)
+    code = models.CharField(max_length=2)
+
+    def full_country(self):
+        return f"{self.code} - {self.name}"
+    
+    def __str__(self):
+        return self.full_country()
+    
+    class Meta:
+        verbose_name_plural = "Countries"
+
 
 
 class Author(models.Model):
@@ -31,6 +55,7 @@ class Book(models.Model):
     author = models.ForeignKey(Author, on_delete=models.CASCADE, null=True, related_name="books")
     is_bestselling = models.BooleanField(default=False)
     url = models.SlugField(default="", null=False, db_index=True)
+    published_country = models.ManyToManyField(Country)
 
     def get_absolute_url(self):
         return reverse("detail_id", args=[self.id])
